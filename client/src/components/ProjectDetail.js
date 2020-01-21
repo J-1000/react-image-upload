@@ -11,7 +11,8 @@ class ProjectDetail extends Component {
     editForm: false,
     taskForm: false,
     title: "",
-    description: ""
+    description: "",
+    imageURL: "",
   };
 
   getData = () => {
@@ -27,7 +28,8 @@ class ProjectDetail extends Component {
         this.setState({
           project: response.data,
           title: response.data.title,
-          description: response.data.description
+          description: response.data.description,
+          imageURL: response.data.imageURL
         });
       })
       .catch(err => {
@@ -113,6 +115,7 @@ class ProjectDetail extends Component {
       <div>
         <h1>{this.state.project.title}</h1>
         <p>{this.state.project.description}</p>
+        <img src="{this.state.imageURL}" alt="{this.state.title}" />
 
         {canUpdate && (
           <>

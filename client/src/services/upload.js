@@ -6,7 +6,6 @@ const errorHandler = err => {
 };
 
 export default {
-  service,
   handleUpload(file) {
     console.log('file to be handled: ', file);
     return axios.post('api/upload', file)
