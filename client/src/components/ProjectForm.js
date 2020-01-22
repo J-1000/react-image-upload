@@ -8,7 +8,8 @@ class ProjectForm extends Component {
   state = {
     title: "",
     description: "",
-    imageURL: ""
+    imageURL: "",
+    publicID: ""
   };
 
   handleChange = event => {
@@ -26,8 +27,9 @@ class ProjectForm extends Component {
     service.handleUpload(uploadData)
       .then(response => {
         const imageURL = response.secure_url;
+        const publicID = response.public_id;
         console.log('res from handleupload: ', response.secure_url);
-        this.setState({ imageURL: imageURL });
+        this.setState({ imageURL: imageURL, publicID: publicID });
         console.log('new state: ', this.state.imageURL);
       })
       .catch(err => {
@@ -49,14 +51,16 @@ class ProjectForm extends Component {
         .post("/api/projects", {
           title: this.state.title,
           description: this.state.description,
-          imageURL: this.state.imageURL
+          imageURL: this.state.imageURL,
+          publicID: this.state.publicID
         })
         .then(response => {
           this.props.refreshData();
           this.setState({
             title: "",
             description: "",
-            imageURL: ""
+            imageURL: "",
+            publicID: ""
           });
         })
         .catch(err => {

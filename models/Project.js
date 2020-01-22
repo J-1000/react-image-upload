@@ -14,7 +14,8 @@ const projectSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User"
   },
-  imageURL: String
+  imageURL: String,
+  publicId: String
 });
 
 const Project = mongoose.model("Project", projectSchema);

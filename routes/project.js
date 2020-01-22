@@ -55,7 +55,8 @@ router.post("/", (req, res) => {
     title: req.body.title,
     description: req.body.description,
     owner: req.user._id,
-    imageURL: req.body.imageURL
+    imageURL: req.body.imageURL,
+    publicID: req.body.publicID
   })
     .then(project => {
       res.json(project);
