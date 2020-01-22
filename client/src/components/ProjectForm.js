@@ -4,6 +4,7 @@ import { Form, Button } from "react-bootstrap";
 import service from "../services/upload.js";
 
 class ProjectForm extends Component {
+
   state = {
     title: "",
     description: "",
@@ -16,48 +17,57 @@ class ProjectForm extends Component {
     });
   };
 
-  // this method handles just the file upload
   handleFileUpload = e => {
     console.log("The file to be uploaded is: ", e.target.files[0]);
 
     const uploadData = new FormData();
-    // imageUrl => this name has to be the same as in the model since we pass
-    // req.body to .create() method when creating a new thing in '/api/things/create' POST route
-    uploadData.append("imageUrl", e.target.files[0]);
+    uploadData.append("imageURL", e.target.files[0]);
 
     service.handleUpload(uploadData)
       .then(response => {
-        // console.log('response is: ', response);
-        // after the console.log we can see that response carries 'secure_url' which we can use to update the state 
-        this.setState({ imageUrl: response.secure_url });
+        const imageURL = response.secure_url;
+        console.log('res from handleupload: ', response.secure_url);
+        this.setState({ imageURL: imageURL });
+        console.log('new state: ', this.state.imageURL);
       })
       .catch(err => {
         console.log("Error while uploading the file: ", err);
       });
+    // check if the form already got submitted and only waits for the image upload
+    if (this.state.submitted === true) {
+      this.handleSubmit();
+    }
   }
 
   handleSubmit = event => {
     event.preventDefault();
     console.log("SUBMIT");
-
-    // axios.post('http://localhost:5555/api/projects')
-    axios
-      .post("/api/projects", {
-        title: this.state.title,
-        description: this.state.description,
-        imageURL: this.state.imageURL
-      })
-      .then(response => {
-        this.props.refreshData();
-        this.setState({
-          title: "",
-          description: "",
-          imageURL: ""
+    // check if the image is already uploaded to the cloud
+    if (this.state.imageURL) {
+      // axios.post('http://localhost:5555/api/projects')
+      axios
+        .post("/api/projects", {
+          title: this.state.title,
+          description: this.state.description,
+          imageURL: this.state.imageURL
+        })
+        .then(response => {
+          this.props.refreshData();
+          this.setState({
+            title: "",
+            description: "",
+            imageURL: ""
+          });
+        })
+        .catch(err => {
+          console.log(err);
         });
+    } else {
+      // set a flag that the project got sumbmitted
+      this.setState({
+        submitted: true
       })
-      .catch(err => {
-        console.log(err);
-      });
+    }
   };
 
   render() {
@@ -86,7 +96,7 @@ class ProjectForm extends Component {
         </Form.Group>
 
         <Form.Group>
-          <Form.Label htmlFor="description">Image: </Form.Label>
+          <Form.Label htmlFor="imageURL">Image: </Form.Label>
           <Form.Control
             type="file"
             name="image"

@@ -3,6 +3,14 @@ const router = express.Router();
 const Project = require("../models/Project");
 const Task = require("../models/Task");
 
+const cloudinary = require('cloudinary');
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
+});
+
 // GET /api/projects
 router.get("/", (req, res) => {
   // return all projects
@@ -46,7 +54,8 @@ router.post("/", (req, res) => {
   Project.create({
     title: req.body.title,
     description: req.body.description,
-    owner: req.user._id
+    owner: req.user._id,
+    imageURL: req.body.imageURL
   })
     .then(project => {
       res.json(project);
@@ -76,8 +85,10 @@ router.put("/:id", (req, res) => {
 
 // DELETE /api/projects/:id
 router.delete("/:id", (req, res) => {
+  cloudinary.v2.uploader.destroy('project-management-app/Bildschirmfoto 2018-12-24 um 09.18.22.png');
   Project.findByIdAndDelete(req.params.id)
     .then(project => {
+      // Delete the image on cloudinary
       // Deletes all the documents in the Task collection where the value for the `_id` field is present in the `project.tasks` array
       return Task.deleteMany({ _id: { $in: project.tasks } }).then(() =>
         res.json({ message: "ok" })
