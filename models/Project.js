@@ -15,7 +15,7 @@ const projectSchema = new Schema({
     ref: "User"
   },
   imageURL: String,
-  publicId: String
+  imagePublicID: String
 });
 
 const Project = mongoose.model("Project", projectSchema);

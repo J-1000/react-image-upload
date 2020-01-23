@@ -52,7 +52,7 @@ class ProjectForm extends Component {
           title: this.state.title,
           description: this.state.description,
           imageURL: this.state.imageURL,
-          publicID: this.state.publicID
+          imagePublicID: this.state.publicID
         })
         .then(response => {
           this.props.refreshData();
@@ -67,7 +67,7 @@ class ProjectForm extends Component {
           console.log(err);
         });
     } else {
-      // set a flag that the project got sumbmitted
+      // set a flag that the project got submitted
       this.setState({
         submitted: true
       })

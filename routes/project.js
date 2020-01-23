@@ -50,13 +50,13 @@ router.get("/:id", (req, res) => {
 // POST /api/projects
 router.post("/", (req, res) => {
   // create 1 project
-
+  console.log(req.body);
   Project.create({
     title: req.body.title,
     description: req.body.description,
     owner: req.user._id,
     imageURL: req.body.imageURL,
-    publicID: req.body.publicID
+    imagePublicID: req.body.imagePublicID
   })
     .then(project => {
       res.json(project);
@@ -86,10 +86,10 @@ router.put("/:id", (req, res) => {
 
 // DELETE /api/projects/:id
 router.delete("/:id", (req, res) => {
-  cloudinary.v2.uploader.destroy('project-management-app/Bildschirmfoto 2018-12-24 um 09.18.22.png');
   Project.findByIdAndDelete(req.params.id)
     .then(project => {
       // Delete the image on cloudinary
+      cloudinary.v2.uploader.destroy(project.imagePublicID);
       // Deletes all the documents in the Task collection where the value for the `_id` field is present in the `project.tasks` array
       return Task.deleteMany({ _id: { $in: project.tasks } }).then(() =>
         res.json({ message: "ok" })
