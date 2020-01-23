@@ -31,18 +31,20 @@ class ProjectForm extends Component {
         console.log('res from handleupload: ', response.secure_url);
         this.setState({ imageURL: imageURL, publicID: publicID });
         console.log('new state: ', this.state.imageURL);
+        // check if the form already got submitted and only waits for the image upload
+        if (this.state.submitted === true) {
+          this.handleSubmit();
+        }
       })
       .catch(err => {
         console.log("Error while uploading the file: ", err);
       });
-    // check if the form already got submitted and only waits for the image upload
-    if (this.state.submitted === true) {
-      this.handleSubmit();
-    }
   }
 
   handleSubmit = event => {
-    event.preventDefault();
+    if (event) {
+      event.preventDefault();
+    }
     console.log("SUBMIT");
     // check if the image is already uploaded to the cloud
     if (this.state.imageURL) {
