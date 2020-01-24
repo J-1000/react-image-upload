@@ -115,7 +115,7 @@ class ProjectDetail extends Component {
       <div>
         <h1>{this.state.project.title}</h1>
         <p>{this.state.project.description}</p>
-        <img src={this.state.imageURL} alt={this.state.title} />
+        <img style={{ width: "200px", height: "200px" }} src={this.state.imageURL} alt={this.state.title} />
 
         {canUpdate && (
           <>
