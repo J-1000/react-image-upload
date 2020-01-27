@@ -9,7 +9,9 @@ class ProjectForm extends Component {
     title: "",
     description: "",
     imageURL: "",
-    publicID: ""
+    publicID: "",
+    submitted: false,
+    imageSelected: false,
   };
 
   handleChange = event => {
@@ -20,7 +22,9 @@ class ProjectForm extends Component {
 
   handleFileUpload = e => {
     console.log("The file to be uploaded is: ", e.target.files[0]);
-
+    this.setState({
+      imageSelected: true
+    });
     const uploadData = new FormData();
     uploadData.append("imageURL", e.target.files[0]);
 
@@ -37,6 +41,9 @@ class ProjectForm extends Component {
         }
       })
       .catch(err => {
+        this.setState({
+          imageSelected: false
+        });
         console.log("Error while uploading the file: ", err);
       });
   }
@@ -46,8 +53,8 @@ class ProjectForm extends Component {
       event.preventDefault();
     }
     console.log("SUBMIT");
-    // check if the image is already uploaded to the cloud
-    if (this.state.imageURL) {
+    // check if the image is already uploaded to the cloud or no image was selected
+    if (this.state.imageURL || !this.state.imageSelected) {
       // axios.post('http://localhost:5555/api/projects')
       axios
         .post("/api/projects", {

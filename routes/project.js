@@ -18,16 +18,10 @@ router.get("/", (req, res) => {
     });
 });
 
-const mongoose = require("mongoose");
 // GET /api/projects/:id
 router.get("/:id", (req, res) => {
   // return 1 project w/ a given id
   const projectId = req.params.id;
-
-  if (!mongoose.Types.ObjectId.isValid(projectId)) {
-    res.status(400).json({ message: "ProjectId is not valid" });
-    return;
-  }
 
   Project.findById(projectId)
     .populate("tasks")
