@@ -60,7 +60,9 @@ router.put("/:id", (req, res) => {
     req.params.id,
     {
       title: req.body.title,
-      description: req.body.description
+      description: req.body.description,
+      imageURL: req.body.imageURL,
+      publicID: req.body.publicID
     },
     { new: true }
   )

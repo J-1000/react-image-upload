@@ -4,11 +4,15 @@ const errorHandler = err => {
   // console.error(err);
   throw err;
 };
+const Axios = axios.create({
+  baseURL: 'http://localhost:3000',
+  /* other custom settings */
+});
 
 export default {
   handleUpload(file) {
     console.log('file to be handled: ', file);
-    return axios.post('api/upload', file)
+    return Axios.post('api/upload', file)
       .then(res => res.data)
       .catch(errorHandler);
   }
