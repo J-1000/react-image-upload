@@ -38,7 +38,7 @@ class ProjectForm extends Component {
       const cloudinaryResponse = await service.handleUpload(uploadData);
       const imageURL = cloudinaryResponse.secure_url;
       const publicID = cloudinaryResponse.public_id;
-      this.setState({ imageURL: imageURL, publicID: publicID });
+      // this.setState({ imageURL: imageURL, publicID: publicID });
     } catch (err) {
       this.setState({
         error: err
@@ -49,8 +49,8 @@ class ProjectForm extends Component {
       const response = await axios.post("/api/projects", {
         title: this.state.title,
         description: this.state.description,
-        imageURL: this.state.imageURL,
-        imagePublicID: this.state.publicID
+        imageURL: imageURL,
+        imagePublicID: publicID
       })
     } catch (err) {
       this.setState({
